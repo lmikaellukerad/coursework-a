@@ -93,13 +93,13 @@ tweets_B <- searchTwitter("#EllenDeGeneres", n=1000, lang="en", resultType="rece
 ### This not requires in the assignment, but still fun to do 
 
 # based on https://youtu.be/JoArGkOpeU0
-corpus_T<-clearTweets(tweets_T, c("")) #remove also some campain slogans
+corpus_T<-clearTweets(tweets_T, c("RT")) #remove also some campain slogans
 wordcloud(corpus_T, max.words=50)
 
-corpus_C<-clearTweets(tweets_C, c(""))
+corpus_C<-clearTweets(tweets_C, c("RT"))
 wordcloud(corpus_C,  max.words=50)
 
-corpus_B<-clearTweets(tweets_B, c(""))#wordcloud(corpus_B,  max.words=50)
+corpus_B<-clearTweets(tweets_B, c("RT"))#wordcloud(corpus_B,  max.words=50)
 ##############################
 
 
@@ -136,7 +136,9 @@ names(semFrame) <- c("Candidate", "score")
 semFrame$Candidate <-factor(semFrame$Candidate, labels=c("Katy Perry", "Barack Obama", "Ellen DeGeneres")) # change the labels for your celibrities
 
 ################## Below insert your own code to answer question 1. The data you need can be found in semFrame
-
+var(analysis_T[[1]])
+var(analysis_C[[1]])
+var(analysis_B[[1]])
 
 
 
