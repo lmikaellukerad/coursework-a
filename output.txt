@@ -1,0 +1,77 @@
+
+> ################# Collect from Twitter
+> 
+> # for creating a twitter app (apps.twitter.com) see youtube https://youtu.be/lT4Kosc_ers
+> #consumer_key .... [TRUNCATED] 
+
+> setup_twitter_oauth(consumer_key,consumer_scret, access_token,access_scret) #connect to  twitter app
+[1] "Using direct authentication"
+
+> ##### This example uses the following 3 celebrities: Donald Trump, Hillary Clinton, and Bernie Sanders
+> ##  You should replace this with your own c .... [TRUNCATED] 
+
+> tweets_C <- searchTwitter("#BarackObama", n=1000, lang="en", resultType="recent") #1000 recent tweets about Hillary Clinton
+[1] "Rate limited .... blocking for a minute and retrying up to 119 times ..."
+[1] "Rate limited .... blocking for a minute and retrying up to 118 times ..."
+[1] "Rate limited .... blocking for a minute and retrying up to 117 times ..."
+[1] "Rate limited .... blocking for a minute and retrying up to 116 times ..."
+
+> tweets_B <- searchTwitter("#EllenDeGeneres", n=1000, lang="en", resultType="recent") #1000 recent tweets about Bernie Sanders
+
+> ######################## WordCloud
+> ### This not requires in the assignment, but still fun to do 
+> 
+> # based on https://youtu.be/JoArGkOpeU0
+> co .... [TRUNCATED] 
+
+> wordcloud(corpus_T, max.words=50)
+
+> corpus_C<-clearTweets(tweets_C, c(""))
+
+> wordcloud(corpus_C,  max.words=50)
+
+> corpus_B<-clearTweets(tweets_B, c(""))#wordcloud(corpus_B,  max.words=50)
+
+> ##############################
+> 
+> 
+> 
+> 
+> 
+> 
+> ######################## Sentiment analysis
+> 
+> tweets_T.text <- laply(tweets_T, function(t)t$ge .... [TRUNCATED] 
+
+> tweets_C.text <- laply(tweets_C, function(t)t$getText()) #get text out of tweets
+
+> tweets_B.text <- laply(tweets_B, function(t)t$getText()) #get text out of tweets
+
+> #taken from https://github.com/mjhea0/twitter-sentiment-analysis
+> pos <- scan('positive-words.txt', what = 'character', comment.char=';') #read the .... [TRUNCATED] 
+
+> neg <- scan('negative-words.txt', what = 'character', comment.char=';') #read the negative words
+
+> source("sentiment3.R") #load algoritm
+
+> # see sentiment3.R form more information about sentiment analysis. It assigns a intereger score
+> # by substracitng the number of occurrence of nega .... [TRUNCATED] 
+
+> analysis_C <- score.sentiment(tweets_C.text, pos, neg)
+
+> analysis_B <- score.sentiment(tweets_B.text, pos, neg)
+
+> sem<-data.frame(analysis_T$score, analysis_C$score, analysis_B$score)
+
+> semFrame <-melt(sem, measured=c(analysis_T.score,analysis_C.score, analysis_B.score ))
+
+> names(semFrame) <- c("Candidate", "score")
+
+> semFrame$Candidate <-factor(semFrame$Candidate, labels=c("Katy Perry", "Barack Obama", "Ellen DeGeneres")) # change the labels for your celibrities
+
+> ################## Below insert your own code to answer question 1. The data you need can be found in semFrame
+> 
+> 
+> 
+> 
+> ######### stop redireti .... [TRUNCATED] 

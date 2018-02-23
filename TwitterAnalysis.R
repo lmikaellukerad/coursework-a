@@ -10,7 +10,7 @@
 # also see https://silviaplanella.wordpress.com/2014/12/31/sentiment-analysis-twitter-and-r/
 ############################################################################################
 
-setwd("~/surfdrive/Teaching/IN4125 - Seminar Research Methodology for Data Science/courseworkA") 
+#setwd("~/surfdrive/Teaching/IN4125 - Seminar Research Methodology for Data Science/courseworkA") 
 # apple , note use / instead of \, which used by windows
 
 
@@ -74,7 +74,7 @@ sink("output.txt")
 #access_token <- 'your access token'
 #access_scret <- 'your access scret'
 
-source("wpb_twitter.R") #this file will set my personal variables for my twitter app, adjust the name of this file. use the provide template your_twitter.R
+source("your_twitter.R") #this file will set my personal variables for my twitter app, adjust the name of this file. use the provide template your_twitter.R
 
 setup_twitter_oauth(consumer_key,consumer_scret, access_token,access_scret) #connect to  twitter app
 
@@ -83,9 +83,9 @@ setup_twitter_oauth(consumer_key,consumer_scret, access_token,access_scret) #con
 ##  You should replace this with your own celebrities, at least 3, but more preferred 
 ##  Note that it will take the computer some to collect the tweets
 
-tweets_T <- searchTwitter("#trump", n=1000, lang="en", resultType="recent") #1000 recent tweets about Donald Trump, in English (I think that 1500 tweets is max)
-tweets_C <- searchTwitter("#hillary", n=1000, lang="en", resultType="recent") #1000 recent tweets about Hillary Clinton
-tweets_B <- searchTwitter("#bernie", n=1000, lang="en", resultType="recent") #1000 recent tweets about Bernie Sanders
+tweets_T <- searchTwitter("#KatyPerry", n=1000, lang="en", resultType="recent") #1000 recent tweets about Donald Trump, in English (I think that 1500 tweets is max)
+tweets_C <- searchTwitter("#BarackObama", n=1000, lang="en", resultType="recent") #1000 recent tweets about Hillary Clinton
+tweets_B <- searchTwitter("#EllenDeGeneres", n=1000, lang="en", resultType="recent") #1000 recent tweets about Bernie Sanders
 
 
 
@@ -93,14 +93,13 @@ tweets_B <- searchTwitter("#bernie", n=1000, lang="en", resultType="recent") #10
 ### This not requires in the assignment, but still fun to do 
 
 # based on https://youtu.be/JoArGkOpeU0
-corpus_T<-clearTweets(tweets_T, c("trump","amp","realdonaldtrump","trumptrain","donald","trumps","alwaystrump")) #remove also some campain slogans
+corpus_T<-clearTweets(tweets_T, c("")) #remove also some campain slogans
 wordcloud(corpus_T, max.words=50)
 
-corpus_C<-clearTweets(tweets_C, c("hillary","amp","clinton","hillarys"))
+corpus_C<-clearTweets(tweets_C, c(""))
 wordcloud(corpus_C,  max.words=50)
 
-corpus_B<-clearTweets(tweets_B, c("bernie", "amp", "sanders","bernies"))
-wordcloud(corpus_B,  max.words=50)
+corpus_B<-clearTweets(tweets_B, c(""))#wordcloud(corpus_B,  max.words=50)
 ##############################
 
 
@@ -134,7 +133,7 @@ sem<-data.frame(analysis_T$score, analysis_C$score, analysis_B$score)
 
 semFrame <-melt(sem, measured=c(analysis_T.score,analysis_C.score, analysis_B.score ))
 names(semFrame) <- c("Candidate", "score")
-semFrame$Candidate <-factor(semFrame$Candidate, labels=c("Donald Trump", "Hillary Clinton", "Bernie Sanders")) # change the labels for your celibrities
+semFrame$Candidate <-factor(semFrame$Candidate, labels=c("Katy Perry", "Barack Obama", "Ellen DeGeneres")) # change the labels for your celibrities
 
 ################## Below insert your own code to answer question 1. The data you need can be found in semFrame
 
