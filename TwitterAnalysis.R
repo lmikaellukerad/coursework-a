@@ -83,7 +83,7 @@ setup_twitter_oauth(consumer_key,consumer_scret, access_token,access_scret) #con
 ##  You should replace this with your own celebrities, at least 3, but more preferred 
 ##  Note that it will take the computer some to collect the tweets
 
-tweets_T <- searchTwitter("#KatyPerry", n=1000, lang="en", resultType="recent") #1000 recent tweets about Donald Trump, in English (I think that 1500 tweets is max)
+tweets_T <- searchTwitter("#JustinBieber", n=1000, lang="en", resultType="recent") #1000 recent tweets about Donald Trump, in English (I think that 1500 tweets is max)
 tweets_C <- searchTwitter("#BarackObama", n=1000, lang="en", resultType="recent") #1000 recent tweets about Hillary Clinton
 tweets_B <- searchTwitter("#EllenDeGeneres", n=1000, lang="en", resultType="recent") #1000 recent tweets about Bernie Sanders
 
@@ -92,14 +92,15 @@ tweets_B <- searchTwitter("#EllenDeGeneres", n=1000, lang="en", resultType="rece
 ######################## WordCloud
 ### This not requires in the assignment, but still fun to do 
 
-# based on https://youtu.be/JoArGkOpeU0
-corpus_T<-clearTweets(tweets_T, c("RT")) #remove also some campain slogans
+# we removed the retweets
+corpus_T<-clearTweets(tweets_T, c("RT")) 
 wordcloud(corpus_T, max.words=50)
 
 corpus_C<-clearTweets(tweets_C, c("RT"))
 wordcloud(corpus_C,  max.words=50)
 
-corpus_B<-clearTweets(tweets_B, c("RT"))#wordcloud(corpus_B,  max.words=50)
+corpus_B<-clearTweets(tweets_B, c("RT"))
+wordcloud(corpus_B,  max.words=50)
 ##############################
 
 
@@ -133,14 +134,51 @@ sem<-data.frame(analysis_T$score, analysis_C$score, analysis_B$score)
 
 semFrame <-melt(sem, measured=c(analysis_T.score,analysis_C.score, analysis_B.score ))
 names(semFrame) <- c("Candidate", "score")
-semFrame$Candidate <-factor(semFrame$Candidate, labels=c("Katy Perry", "Barack Obama", "Ellen DeGeneres")) # change the labels for your celibrities
+semFrame$Candidate <-factor(semFrame$Candidate, labels=c("Justin Bieber", "Barack Obama", "Ellen DeGeneres")) # change the labels for your celibrities
 
-################## Below insert your own code to answer question 1. The data you need can be found in semFrame
+################## Below insert your own code to answer question 2. The data you need can be found in semFrame
 var(analysis_T[[1]])
 var(analysis_C[[1]])
 var(analysis_B[[1]])
 
+#question 3
+t <- density(analysis_T[[1]])
+plot(t, main="Justin Bieber density plot")
+polygon(t, col="red")
 
+c <- density(analysis_C[[1]])
+plot(c, main="Barack Obama density plot")
+polygon(c, col="blue")
+
+b <- density(analysis_B[[1]])
+plot(b, main="Ellen Degeneres density plot")
+polygon(b, col="yellow")
+
+#question 4
+
+library(gplots)
+plotmeans(semFrame$score~semFrame$Candidate, digits=2, mean.labels=T, main="Plot of sentiment means by celebrity")
+
+#question 5
+twitterLM <- lm(score ~ 1, data = semFrame)
+twitterLM2 <- lm(score ~ Candidate, data = semFrame)
+anova(twitterLM, twitterLM2, test="F")
+
+mean(analysis_T[[1]])
+mean(analysis_C[[1]])
+mean(analysis_B[[1]])
+
+mean(semFrame[[2]])
+
+#question 6
+bon <- pairwise.t.test(semFrame[[2]], semFrame[[1]],p.adjust.method = "bonferroni")
+bonp <- bon[["p.value"]]
+
+an <- aov(semFrame[[2]] ~ semFrame[[1]], na.action = na.exclude)
+tukey <- TukeyHSD(an)
+tukOutput<-tukey[["semFrame[[1]]"]]
+plot(tukey)
 
 ######### stop redireting output.
 sink()
+closeAllConnections()
